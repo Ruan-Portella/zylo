@@ -11,8 +11,8 @@ export const HomeNavbar = () => {
         <div className="flex items-center flex-shrink-0">
           <SidebarTrigger />
           <Link href="/">
-            <div className="p-4 flex gap-1 cursor-pointer">
-              <Image src="/logo.svg" alt="logo" width={32} height={32} />
+            <div className="p-4 flex gap-1 cursor-pointer items-center">
+              <Image src="/logo.svg" alt="logo" width={28} height={28} />
               <p className="text-xl font-semibold tracking-tighter">Zylo</p>
             </div>
           </Link>
