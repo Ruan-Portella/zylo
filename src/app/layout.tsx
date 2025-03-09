@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from '@clerk/localizations'
 import "./globals.css";
+import { TRPCProvider } from "@/trpc/client";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
         <body
           className={`${outfit.className} antialiased`}
         >
-          {children}
+          <TRPCProvider>
+            {children}
+          </TRPCProvider>
         </body>
       </html>
     </ClerkProvider>
