@@ -20,7 +20,7 @@ export const StudioUploadModal = () => {
   return (
     <Button variant='secondary' onClick={() => create.mutate()} disabled={create.isPending}>
       {
-        create.isPending ? <Loader2Icon className="animate=spin" /> : <PlusIcon />
+        create.isPending ? <Loader2Icon className="animate-spin" /> : <PlusIcon />
       }
       Criar
     </Button>
