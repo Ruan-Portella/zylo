@@ -14,6 +14,11 @@ import {
   TableRow
 } from '@/components/ui/table'
 import Link from "next/link";
+import { VideoThumbnail } from "@/modules/videos/ui/components/video-thumbnail";
+import { translateMuxStatus } from "@/lib/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Globe2Icon, LockIcon } from "lucide-react";
 
 export const VideosSection = () => {
   return (
@@ -53,16 +58,49 @@ const VideosSectionSuspense = () => {
                 <Link href={`/studio/videos/${video.id}`} key={video.id} legacyBehavior>
                   <TableRow className="cursor-pointer">
                     <TableCell className="pl-6">
-                      {video.title}
+                      <div className="flex items-center gap-4">
+                        <div className="relative aspect-video w-36 shrink-0">
+                          <VideoThumbnail
+                            imageUrl={video.thumbnailUrl!}
+                            previewUrl={video.previewUrl!}
+                            title={video.title}
+                            duration={video.duration || 0}
+                          />
+                        </div>
+                        <div className="flex flex-col overflow-hidden gap-y-1">
+                          <span className="text-sm line-clamp-1">{video.title}</span>
+                          <span className="text-sm text-muted-foreground line-clamp-1">{video.description || 'Sem descrição'}</span>
+                        </div>
+                      </div>
                     </TableCell>
                     <TableCell>
-                      visibilidade
+                      {
+                        video.visibility === 'private' ? (
+                          <div>
+                            <LockIcon className="size-4" />
+                            <span className="text-sm">Privado</span>
+                          </div>
+                        ) : (
+                          <div>
+                            <Globe2Icon className="size-4" />
+                            <span className="text-sm">Publicado</span>
+                          </div>
+                        )
+                      }
                     </TableCell>
                     <TableCell>
-                      status
+                      <div className="flex items-center">
+                        {
+                          translateMuxStatus(video.muxStatus || 'error')
+                        }
+                      </div>
                     </TableCell>
-                    <TableCell>
-                      data
+                    <TableCell className="text-sm truncate">
+                      {
+                        format(new Date(video.createdAt), 'd MMMM yyyy', {
+                          locale: ptBR
+                        })
+                      }
                     </TableCell>
                     <TableCell className="text-right">
                       visualizações
