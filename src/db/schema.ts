@@ -1,5 +1,10 @@
 import { relations } from "drizzle-orm";
 import { integer, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
 
 export const users = pgTable("users", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -11,7 +16,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 }, (t) => [uniqueIndex('clerk_id_idx').on(t.clerkId)]);
 
-export const userRelations = relations(users, ({many}) => ({
+export const userRelations = relations(users, ({ many }) => ({
   videos: many(videos)
 }))
 
@@ -23,7 +28,7 @@ export const categories = pgTable("categories", {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 }, (t) => [uniqueIndex('name_idx').on(t.name)]);
 
-export const categoryRelations = relations(categories, ({many}) => ({
+export const categoryRelations = relations(categories, ({ many }) => ({
   videos: many(videos)
 }))
 
@@ -40,7 +45,9 @@ export const videos = pgTable("videos", {
   muxTrackId: text('mux_track_id').unique(),
   muxTrackStatus: text('mux_track_status'),
   thumbnailUrl: text('thumbnail_url'),
+  thumbnailKey: text('thumbnail_key'),
   previewUrl: text('preview_url'),
+  previewKey: text('preview_key'),
   duration: integer('duration').default(0).notNull(),
   visibility: videoVisibility('visibility').default('private').notNull(),
   userId: uuid('user_id').references(() => users.id, {
@@ -54,7 +61,11 @@ export const videos = pgTable("videos", {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export const videoRelations = relations(videos, ({one}) => ({
+export const videoInsertSchema = createInsertSchema(videos);
+export const videoUpdateSchema = createUpdateSchema(videos);
+export const videoSelectSchema = createSelectSchema(videos);
+
+export const videoRelations = relations(videos, ({ one }) => ({
   user: one(users, {
     fields: [videos.userId],
     references: [users.id]

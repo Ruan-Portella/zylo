@@ -4,7 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from '@clerk/localizations'
 import "./globals.css";
 import { TRPCProvider } from "@/trpc/client";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 
 const outfit = Outfit({
   subsets: ["latin"],

@@ -1,5 +1,10 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import {
+  generateUploadButton,
+  generateUploadDropzone,
+} from "@uploadthing/react";
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -22,9 +27,16 @@ export const translateMuxStatus = (status: string) => {
       return 'Pronto';
     case 'waiting':
       return 'Aguardando';
+    case 'preparing':
+      return 'Preparando';
     case 'error':
       return 'Erro';
+    case 'no_audio':
+      return 'Sem áudio';
     default:
       return status;
   }
 };
+
+export const UploadButton = generateUploadButton<OurFileRouter>();
+export const UploadDropzone = generateUploadDropzone<OurFileRouter>();

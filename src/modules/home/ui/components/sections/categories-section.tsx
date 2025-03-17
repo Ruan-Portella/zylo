@@ -5,7 +5,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { FilterCarousel } from "@/components/filter-carousel";
 import { useRouter } from "next/navigation";
-
 interface CategoriesSectionProps {
   categoryId?: string;
 };
