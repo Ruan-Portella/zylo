@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { trpc } from "@/trpc/client";
-import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCcwIcon, SparklesIcon, TrashIcon } from "lucide-react";
+import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, Loader2, LockIcon, MoreVerticalIcon, RotateCcwIcon, SparklesIcon, TrashIcon } from "lucide-react";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { videoUpdateSchema } from "@/db/schema";
@@ -65,11 +65,35 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
   });
   const restoreThumbnail = trpc.videos.restoreThumbnail.useMutation({
     onSuccess: () => {
-      utils.studio.getOne.invalidate({id: videoId});
+      utils.studio.getOne.invalidate({ id: videoId });
       toast.success('Thumbnail restaurada com sucesso');
     },
     onError: () => {
       toast.error('Erro ao restaurar a thumbnail');
+    }
+  });
+  const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
+    onSuccess: () => {
+      toast.success('Thumbnail sendo gerada', { description: 'Isso pode levar alguns minutos' });
+    },
+    onError: () => {
+      toast.error('Erro ao gerar thumbnail');
+    }
+  });
+  const generateTitle = trpc.videos.generateTitle.useMutation({
+    onSuccess: () => {
+      toast.success('Título sendo gerada', { description: 'Isso pode levar alguns minutos' });
+    },
+    onError: () => {
+      toast.error('Erro ao gerar Título');
+    }
+  });
+  const generateDescription = trpc.videos.generateDescription.useMutation({
+    onSuccess: () => {
+      toast.success('Descrição sendo gerado', { description: 'Isso pode levar alguns minutos' });
+    },
+    onError: () => {
+      toast.error('Erro ao gerar Descrição');
     }
   });
   const update = trpc.videos.update.useMutation({
@@ -149,7 +173,23 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                 name='title'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor='title'>Título</FormLabel>
+                    <FormLabel htmlFor='title'>
+                      <div className="flex items-center gap-x-2">
+                        Título
+                        <Button
+                          type="button"
+                          size='icon'
+                          variant='outline'
+                          className="rounded-full size-6 [&_svg]:size-3"
+                          onClick={() => generateTitle.mutate({ id: videoId })}
+                          disabled={generateTitle.isPending || !video.muxTrackId}
+                        >
+                          {
+                            generateTitle.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
+                          }
+                        </Button>
+                      </div>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -165,7 +205,23 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                 name='description'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor='description'>Descrição</FormLabel>
+                    <FormLabel htmlFor='description'>
+                      <div className="flex items-center gap-x-2">
+                        Descrição
+                        <Button
+                          type="button"
+                          size='icon'
+                          variant='outline'
+                          className="rounded-full size-6 [&_svg]:size-3"
+                          onClick={() => generateDescription.mutate({ id: videoId })}
+                          disabled={generateDescription.isPending || !video.muxTrackId}
+                        >
+                          {
+                            generateDescription.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
+                          }
+                        </Button>
+                      </div>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
@@ -204,7 +260,9 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                               <ImagePlusIcon className="size-4" />
                               Alterar
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => generateThumbnail.mutate({
+                              id: videoId
+                            })}>
                               <SparklesIcon className="size-4" />
                               Geração por IA
                             </DropdownMenuItem>
