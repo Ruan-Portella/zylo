@@ -17,7 +17,7 @@ async function resizeImage(url: string) {
   const buffer = await response.buffer();
 
   const resizedBuffer = await sharp(buffer)
-    .resize(1792, 1024, { fit: "cover" })
+    .resize(1920, 1080, { fit: "cover" })
     .toBuffer();
 
   const createId = () => Math.random().toString(36).substring(7);
