@@ -3,6 +3,7 @@ import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, Side
 import { useAuth, useClerk } from '@clerk/nextjs';
 import { FlameIcon, HomeIcon, PlaySquareIcon } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react'
 
 const items = [
@@ -27,6 +28,8 @@ const items = [
 export default function MainSection() {
   const clerk = useClerk();
   const { isSignedIn } = useAuth();
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent>
@@ -34,7 +37,7 @@ export default function MainSection() {
           {
             items.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild isActive={false} onClick={(e) => {
+                <SidebarMenuButton tooltip={item.title} asChild isActive={pathname === item.url} onClick={(e) => {
                   if (!isSignedIn && item.auth) {
                     e.preventDefault();
                     return clerk.openSignIn();

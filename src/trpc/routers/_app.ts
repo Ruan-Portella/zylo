@@ -9,6 +9,7 @@ import { commentsRouter } from '@/modules/comments/server/procedures';
 import { commentReactionsRouter } from '@/modules/comment-reactions/server/procedures';
 import { suggestionsRouter } from '@/modules/suggestions/server/procedures';
 import { searchRouter } from '@/modules/search/server/procedures';
+import { playlistRouter } from '@/modules/playlists/server/procedures';
 
 export const appRouter = createTRPCRouter({
   categories: categoriesRouter,
@@ -20,7 +21,8 @@ export const appRouter = createTRPCRouter({
   comments: commentsRouter,
   commentReactions: commentReactionsRouter,
   suggestions: suggestionsRouter,
-  search: searchRouter
+  search: searchRouter,
+  playlists: playlistRouter
 });
 
 export type AppRouter = typeof appRouter;
