@@ -23,11 +23,17 @@ export const PlaylistAddModal = ({ open, onOpenChange, videoId }: PlaylistAddMod
   })
 
   const addVideo = trpc.playlists.addVideo.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Vídeo adicionado na playlist com sucesso!")
       utils.playlists.getMany.invalidate()
       utils.playlists.getManyForVideo.invalidate({
         videoId,
+      })
+      utils.playlists.getOne.invalidate({
+        id: data.playlistId,
+      })
+      utils.playlists.getVideos.invalidate({
+        playlistId: data.playlistId,
       })
     },
     onError: () => {
@@ -36,11 +42,17 @@ export const PlaylistAddModal = ({ open, onOpenChange, videoId }: PlaylistAddMod
   })
 
   const removeVideo = trpc.playlists.removeVideo.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Vídeo removido da playlist com sucesso!")
       utils.playlists.getMany.invalidate()
       utils.playlists.getManyForVideo.invalidate({
         videoId,
+      })
+      utils.playlists.getOne.invalidate({
+        id: data.playlistId,
+      })
+      utils.playlists.getVideos.invalidate({
+        playlistId: data.playlistId,
       })
     },
     onError: () => {
