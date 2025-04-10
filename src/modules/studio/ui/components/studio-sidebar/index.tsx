@@ -17,7 +17,7 @@ export default function StudioSidebar() {
       <SidebarContent className='bg-background'>
         <div className="flex items-center flex-shrink-0 px-2.5 md:hidden">
           <SidebarTrigger className='pt-4' />
-          <Link href="/">
+          <Link prefetch  href="/">
             <div className="p-3 pb-0 flex gap-1 cursor-pointer items-center">
               <Image src="/logo.svg" alt="logo" width={28} height={28} />
               <p className="text-xl font-semibold tracking-tighter">Zylo</p>
@@ -30,7 +30,7 @@ export default function StudioSidebar() {
               <StudioSideBarHeader />
               <SidebarMenuItem>
                   <SidebarMenuButton isActive={pathname === '/studio'} tooltip='Conteúdo' asChild>
-                    <Link href='/studio/videos'>
+                    <Link prefetch  href='/studio/videos'>
                       <VideoIcon className='size-5' />
                       <span className='text-sm'>
                         Conteúdo
@@ -41,7 +41,7 @@ export default function StudioSidebar() {
                 <Separator />
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip='Sair do Studio' asChild>
-                    <Link href='/'>
+                    <Link prefetch  href='/'>
                       <LogOutIcon className='size-5' />
                       <span className='text-sm'>Sair do Studio</span>
                     </Link>

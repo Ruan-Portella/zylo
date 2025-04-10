@@ -64,7 +64,7 @@ const SubscriptionsVideosSectionSuspense = () => {
       <div className="flex flex-col gap-4">
         {
           subscriptions.pages.flatMap((page) => page.items).map((subscription) => (
-            <Link key={subscription.creatorId} href={`/users/${subscription.creatorId}}`}>
+            <Link prefetch  key={subscription.creatorId} href={`/users/${subscription.creatorId}}`}>
               <SubscriptionItem
                 key={subscription.creatorId}
                 name={subscription.user.name}

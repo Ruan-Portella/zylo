@@ -46,7 +46,7 @@ export default function PersonalSection() {
                     return clerk.openSignIn();
                   }
                 }}>
-                  <Link href={item.url} className='flex items-center gap-4'>
+                  <Link prefetch  href={item.url} className='flex items-center gap-4'>
                     <item.icon />
                     <span className='text-sm'>{item.title}</span>
                   </Link>
