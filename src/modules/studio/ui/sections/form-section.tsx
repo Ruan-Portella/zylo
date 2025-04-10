@@ -25,6 +25,7 @@ import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { APP_URL } from "@/constants";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface FormSectionProps {
   videoId: string;
@@ -222,7 +223,7 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => revalidate.mutate({ id: videoId })}>
+                  <DropdownMenuItem onClick={() => revalidate.mutate({ id: videoId })}>
                     <RotateCcwIcon className="size-4 mr-2" />
                     Revalidar
                   </DropdownMenuItem>
@@ -244,18 +245,33 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                     <FormLabel htmlFor='title'>
                       <div className="flex items-center gap-x-2">
                         Título
-                        <Button
-                          type="button"
-                          size='icon'
-                          variant='outline'
-                          className="rounded-full size-6 [&_svg]:size-3"
-                          onClick={() => generateTitle.mutate({ id: videoId })}
-                          disabled={generateTitle.isPending || !video.muxTrackId}
-                        >
-                          {
-                            generateTitle.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
-                          }
-                        </Button>
+                        <TooltipProvider>
+                          <Tooltip delayDuration={0}>
+                            <TooltipTrigger asChild>
+                              <Button
+                                type="button"
+                                size='icon'
+                                variant='outline'
+                                className="rounded-full size-6 [&_svg]:size-3"
+                                onClick={() => {
+                                  if (field.value === 'disabled') {
+                                    generateTitle.mutate({ id: videoId })
+                                  } else {
+                                    toast.error('Plano não suportado')
+                                  }
+                                }}
+                                disabled={generateTitle.isPending}
+                              >
+                                {
+                                  generateTitle.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
+                                }
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm">Plano não suportado</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                     </FormLabel>
                     <FormControl>
@@ -276,18 +292,33 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                     <FormLabel htmlFor='description'>
                       <div className="flex items-center gap-x-2">
                         Descrição
-                        <Button
-                          type="button"
-                          size='icon'
-                          variant='outline'
-                          className="rounded-full size-6 [&_svg]:size-3"
-                          onClick={() => generateDescription.mutate({ id: videoId })}
-                          disabled={generateDescription.isPending || !video.muxTrackId}
-                        >
-                          {
-                            generateDescription.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
-                          }
-                        </Button>
+                        <TooltipProvider>
+                          <Tooltip delayDuration={0}>
+                            <TooltipTrigger asChild>
+                              <Button
+                                type="button"
+                                size='icon'
+                                variant='outline'
+                                className="rounded-full size-6 [&_svg]:size-3"
+                                onClick={() => {
+                                  if (field.value === 'disabled') {
+                                    generateDescription.mutate({ id: videoId })
+                                  } else {
+                                    toast.error('Plano não suportado')
+                                  }
+                                }}
+                                disabled={generateDescription.isPending}
+                              >
+                                {
+                                  generateDescription.isPending ? <Loader2 className="animate-spin" /> : <SparklesIcon />
+                                }
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm">Plano não suportado</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                     </FormLabel>
                     <FormControl>
@@ -328,10 +359,10 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                               <ImagePlusIcon className="size-4" />
                               Alterar
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setThumbnailGenerateModalOpen(true)}>
+                            {/* <DropdownMenuItem onClick={() => setThumbnailGenerateModalOpen(true)}>
                               <SparklesIcon className="size-4" />
                               Geração por IA
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuItem onClick={() => restoreThumbnail.mutate({ id: videoId })}>
                               <RotateCcwIcon className="size-4" />
                               Restaurar
@@ -389,7 +420,7 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                         Link do vídeo
                       </p>
                       <div className="flex items-center gap-x-2">
-                        <Link prefetch  href={`/videos/${video.id}`}>
+                        <Link prefetch href={`/videos/${video.id}`}>
                           <p className="line-clamp-1 text-sm text-blue-500">
                             {fullUrl}
                           </p>
