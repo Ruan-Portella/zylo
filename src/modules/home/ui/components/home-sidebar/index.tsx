@@ -5,6 +5,8 @@ import { Separator } from '@/components/ui/separator'
 import PersonalSection from './personal-section'
 import Image from 'next/image'
 import Link from 'next/link'
+import SubscriptionsSection from './subscriptions-section'
+import { SignedIn } from '@clerk/nextjs'
 
 export default function HomeSidebar() {
   return (
@@ -22,6 +24,10 @@ export default function HomeSidebar() {
         <MainSection />
         <Separator />
         <PersonalSection />
+        <SignedIn>
+          <Separator />
+          <SubscriptionsSection />
+        </SignedIn>
       </SidebarContent>
     </Sidebar>
   )

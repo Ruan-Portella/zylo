@@ -19,6 +19,7 @@ export const useSubscription = ({ userId, isSubscribed, fromVideoId }: useSubscr
 
       utils.videos.getManySubscribed.invalidate();
       utils.users.getOne.invalidate({ id: userId });
+      utils.subscriptions.getMany.invalidate();
 
       if (fromVideoId) {
         utils.videos.getOne.invalidate({ id: fromVideoId });
@@ -40,6 +41,7 @@ export const useSubscription = ({ userId, isSubscribed, fromVideoId }: useSubscr
 
       utils.users.getOne.invalidate({ id: userId });
       utils.videos.getManySubscribed.invalidate();
+      utils.subscriptions.getMany.invalidate();
 
       if (fromVideoId) {
         utils.videos.getOne.invalidate({ id: fromVideoId });
