@@ -2,7 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
     {
-      "comment": "Mantem o banco (Neon) acordado. O horario e UTC: 06:20 UTC = 03:20 em Brasilia — 20 minutos depois do taskup, para os dois nao dispararem juntos. Ver src/app/api/health/route.ts.",
       "path": "/api/health",
       "schedule": "20 6 * * *"
     }

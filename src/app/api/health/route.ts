@@ -20,6 +20,13 @@ import { db } from '@/db';
 ///
 /// Uma rota que devolve `{ ok: true }` sem tocar em nada mantém acordado só o que
 /// nunca dormiu. `select 1` é a query mais barata que ainda abre conexão.
+/// ## O agendamento fica no `vercel.json`, sem comentário
+///
+/// `20 6 * * *`, em **UTC** — 03:20 em Brasília, vinte minutos depois do taskup
+/// para os dois não dispararem juntos. O horário não está anotado lá porque o
+/// `vercel.json` valida o schema estritamente: uma chave `comment` dentro de
+/// `crons[0]` faz o deploy falhar com *"should NOT have additional property"*.
+/// JSON não tem comentário, então a explicação mora aqui.
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
